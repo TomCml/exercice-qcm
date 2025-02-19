@@ -1,5 +1,6 @@
-const mysql = require ("mysql2");
-
+import mysql from "mysql2/promise";
+import dotenv from "dotenv";
+dotenv.config();
 
 const sqldb = mysql.createPool({
     host: 'localhost',
@@ -7,3 +8,5 @@ const sqldb = mysql.createPool({
     password: process.env.SQL_PASSWORD,
     database: 'exercice_qcm'
 });
+
+export default sqldb;
