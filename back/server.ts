@@ -12,9 +12,6 @@ app.use(
   })
 );
 
-app.use("/api");
-app.use("/api");
-
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
   console.log(`Serveur running on port : ${PORT}`);
