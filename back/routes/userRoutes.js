@@ -10,7 +10,11 @@ const MySQLAdapter_1 = require("../adapters/MySQLAdapter");
 const router = express_1.default.Router();
 const userModel = new UserModel_1.default(new MySQLAdapter_1.MySQLAdapter());
 const userController = new UserController_1.default(userModel);
-router.post('/users', (req, res) => userController.createUser(req, res));
+router.post('/users', (req, res) => {
+    console.log('POST /users called'); // Log d’entrée dans la route
+    console.log('Request body:', req.body); // Vérifie le body reçu
+    userController.createUser(req, res);
+});
 router.get('/users/:id', (req, res) => userController.getUserById(req, res));
 router.put('/users/:id', (req, res) => userController.updateUser(req, res));
 router.delete('/users/:id', (req, res) => userController.deleteUser(req, res));

@@ -17,6 +17,10 @@ class UserModel {
         return this.databaseToolbox.getUserById(id);
     }
 
+    async getUserByEmail(email: string): Promise<User | null> {
+        return this.databaseToolbox.getUserByEmail(email);
+    }
+
     async updateUser(user: Partial<User>): Promise<number> {
         return this.databaseToolbox.updateUser(user)
     }

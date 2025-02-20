@@ -1,4 +1,4 @@
-import { Request, Response } from 'express';
+import { Request, Response,  } from 'express';
 import UserModel from '../models/UserModel';
 
 class UserController {
@@ -8,18 +8,47 @@ class UserController {
         this.userModel = userModel;
     }
 
-    async createUser(req: Request, res: Response) {
+    async createAccount(req: Request, res: Response) {
         try {
-            const newUser = await this.userModel.createUser(req.body);
-            res.status(201).json(newUser);
+            const { email } = req.body;
+            
+            const existingUser = await this.userModel.getUserByEmail(email);
+            console.log("utilisateur existant:", existingUser)
+    
+            if (existingUser) {
+                return res.status(409).json({ message: 'User already registered' });
+            }
+    
+            const newUserId = await this.userModel.createUser(req.body);
+            res.status(201).json({ message: 'User created', userId: newUserId });
+    
+        } catch (error) {
+            const err = error as Error;
+            console.error('Controller error:', err.message); 
+            res.status(500).json({ error: 'Internal Server Error', details: err.message });
+        }
+    }
+    
+    
+
+    async getUserById(req: Request, res: Response) {
+        try {
+            const user = await this.userModel.getUserById(parseInt(req.params.id));
+            if (user) {
+                res.status(200).json(user);
+            } else {
+                res.status(404).json({ error: 'User not found' });
+            }
         } catch (error) {
             res.status(500).json({ error: 'Internal Server Error' });
         }
     };
 
-    async getUserById(req: Request, res: Response) {
+    async getUserByEmail(req: Request, res: Response) {
         try {
-            const user = await this.userModel.getUserById(parseInt(req.params.id));
+            console.log("getuserbyemail marche")
+
+            const user = await this.userModel.getUserByEmail(req.body.email);
             if (user) {
                 res.status(200).json(user);
             } else {
@@ -70,6 +99,13 @@ class UserController {
             res.status(500).json({ error: 'Internal Server Error' });
         }
     };
+
+    async loginUser(req: Request, res: Response){
+
+        const response = await this.userModel.deleteUser(parseInt(req.params.id));
+
+
+    }
 
     
 

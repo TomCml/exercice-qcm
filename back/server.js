@@ -15,6 +15,7 @@ app.use((0, cors_1.default)({
     allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true,
 }));
+app.use(express_1.default.json());
 app.use('/api', userRoutes_1.default);
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {

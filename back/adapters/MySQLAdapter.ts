@@ -10,18 +10,34 @@ export class MySQLAdapter implements DatabaseAdapter   {
     //User Methods
 
     async createUser(user: Omit<User, 'id'>): Promise<number> {
-
-        const query = "INSERT INTO users (username, email, password) VALUES (?, ?, ?)"
-        const [result] = await pool.execute<ResultSetHeader>(query, [user.username, user.email, user.password])
-        return result.insertId;
-    };
-
+        const query = "INSERT INTO users (username, email, password) VALUES (?, ?, ?)";
+        try {
+            const [result] = await pool.execute<ResultSetHeader>(query, [user.username, user.email, user.password]);
+            console.log('User created successfully with ID:', result.insertId); 
+            return result.insertId;
+        } catch (error) {
+            console.error('Database insertion error:', error); 
+            throw error; 
+        }
+    }
+    
     async getUserById(id: number): Promise<User | null> {
 
         const query = "SELECT * FROM users WHERE id = ?";
         const [rows] = await pool.execute<(User & RowDataPacket)[]>(query, [id]);
-        return rows[0] ?? null; 
+        return rows[0]; 
     };
+
+    async getUserByEmail(email: string): Promise<User | null> {
+        const query = "SELECT * FROM users WHERE email = ?";
+        console.log('Executing query:', query, 'with email:', email); 
+    
+        const [rows] = await pool.execute<(User & RowDataPacket)[]>(query, [email]);
+        console.log('Query result:', rows); 
+    
+        return rows[0] ?? null;
+    };
+    
       
     async updateUser(user: Partial<User>): Promise<number> {
         const updates = [];

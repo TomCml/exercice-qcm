@@ -5,6 +5,7 @@ import QCM from "./QCMInterface";
 export default interface DatabaseAdapter{
     createUser(User: Omit<User, 'id'>): Promise<number>;
     getUserById(id: number): Promise<User | null>;
+    getUserByEmail(email: string): Promise<User | null>;
     updateUser(user: Partial<User>): Promise<number>;
     deleteUser(id: number): Promise<number>;
     getAllUsers(): Promise<User[]>;

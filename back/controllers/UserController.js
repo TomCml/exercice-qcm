@@ -20,11 +20,11 @@ class UserController {
                 res.status(201).json(newUser);
             }
             catch (error) {
-                res.status(500).json({ error: 'Internal Server Error' });
+                console.error('Create User Error:', error); // Ajout du log
+                res.status(500).json({ error: 'Internal Server Error', details: error });
             }
         });
     }
-    ;
     getUserById(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {

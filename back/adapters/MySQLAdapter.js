@@ -19,11 +19,25 @@ class MySQLAdapter {
     createUser(user) {
         return __awaiter(this, void 0, void 0, function* () {
             const query = "INSERT INTO users (username, email, password) VALUES (?, ?, ?)";
-            const [result] = yield sql_1.default.execute(query, [user.username, user.email, user.password]);
-            return result.insertId;
+            console.log('Trying to create user with data:', user); // Affiche les données envoyées
+            try {
+                yield sql_1.default.query('SELECT 1');
+                console.log('Database connection OK');
+            }
+            catch (err) {
+                console.error('Database connection failed:', err); // Problème avec le pool
+            }
+            try {
+                const [result] = yield sql_1.default.execute(query, [user.username, user.email, user.password]);
+                console.log('User created successfully with ID:', result.insertId); // Succès de la requête
+                return result.insertId;
+            }
+            catch (error) {
+                console.error('Database insertion error:', error); // Affiche l'erreur exacte
+                throw error; // Permet de voir le détail dans les logs du serveur
+            }
         });
     }
-    ;
     getUserById(id) {
         return __awaiter(this, void 0, void 0, function* () {
             var _a;
