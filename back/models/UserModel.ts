@@ -17,8 +17,8 @@ class UserModel {
         return this.databaseToolbox.getUserById(id);
     }
 
-    async updateUser(id: number, user: Partial<User>): Promise<number> {
-        return this.databaseToolbox.updateUser(id, user)
+    async updateUser(user: Partial<User>): Promise<number> {
+        return this.databaseToolbox.updateUser(user)
     }
     async deleteUser(id: number): Promise<number>{
         return this.databaseToolbox.deleteUser(id)
